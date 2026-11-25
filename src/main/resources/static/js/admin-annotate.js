@@ -52,9 +52,16 @@
 			redraw.type = "button";
 			redraw.textContent = "Redraw";
 			redraw.setAttribute("aria-label", `Redraw box for ${annotation.newsTitle}`);
-			redraw.addEventListener("click", () => {
+			redraw.addEventListener("click", async () => {
 				redrawAnnotation = annotation;
-				setStatus(`Draw a replacement box for “${annotation.newsTitle}”.`);
+				if (annotation.pageNumber !== pageNumber) {
+					pageNumber = annotation.pageNumber;
+					await renderPage();
+				} else {
+					renderExistingRectangles();
+				}
+				overlay.querySelector(".is-redraw-target")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+				setStatus(`Draw a replacement box for “${annotation.newsTitle}”. Its highlighted box will be replaced.`);
 			});
 			const editTitle = document.createElement("button");
 			editTitle.className = "delete-annotation adjust-annotation";
@@ -89,6 +96,7 @@
 			const rectangle = document.createElement("div");
 			rectangle.className = "drawn-rectangle";
 			rectangle.title = item.newsTitle;
+			if (item === redrawAnnotation) rectangle.classList.add("is-redraw-target");
 			rectangle.style.left = `${Math.min(x1, x2)}px`;
 			rectangle.style.top = `${Math.min(y1, y2)}px`;
 			rectangle.style.width = `${Math.abs(x2 - x1)}px`;

@@ -79,6 +79,7 @@ td { font-size: 14px; }
 .drawing-overlay, .reader-overlay { position: absolute; inset: 0 auto auto 0; width: 100%; height: 100%; }
 .drawing-overlay { cursor: crosshair; touch-action: none; }
 .drawn-rectangle, .article-overlay { position: absolute; border: 2px solid rgba(23, 107, 91, .8); background: rgba(23, 107, 91, .12); }
+.drawn-rectangle.is-redraw-target { border: 3px solid #e07a1f; background: rgba(224, 122, 31, .28); box-shadow: 0 0 0 4px rgba(224, 122, 31, .35); }
 .annotation-sidebar { position: sticky; top: 16px; }
 .annotation-sidebar > .muted { font-size: 13px; }
 .annotation-list { display: grid; gap: 8px; padding: 0; margin: 18px 0; list-style: none; }
@@ -114,9 +115,10 @@ html[dir="rtl"] .reader-page .news-card-footer { flex-direction: row-reverse; }
 .public-empty h1 { font-size: clamp(27px, 4vw, 40px); }
 .modal-backdrop { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(11, 24, 27, .7); }
 .modal-backdrop[hidden] { display: none; }
-.story-modal { position: relative; width: min(600px, 100%); max-height: 90vh; overflow-y: auto; padding: 28px; border-radius: 12px; background: white; box-shadow: 0 16px 60px rgba(0, 0, 0, .25); }
+.story-modal { position: relative; width: fit-content; max-width: 100%; max-height: 92vh; overflow-y: auto; padding: 20px 24px; border-radius: 12px; background: white; box-shadow: 0 16px 60px rgba(0, 0, 0, .25); }
+.story-modal .modal-brand { margin: 0 0 10px; color: #173d35; font-size: 20px; font-weight: 700; letter-spacing: -.03em; }
 .story-modal h2 { padding-right: 32px; font-family: Georgia, serif; font-size: 25px; overflow-wrap: anywhere; }
-.story-modal img { display: block; max-width: 100%; max-height: 55vh; margin: 18px auto; object-fit: contain; }
+.story-modal img { display: block; width: auto; max-width: 100%; height: auto; margin: 12px 0 0; }
 .modal-close { position: absolute; top: 12px; right: 14px; width: 36px; height: 36px; border: 0; border-radius: 50%; color: var(--muted); background: var(--wash); cursor: pointer; font-size: 25px; }
 .share-actions { flex-wrap: wrap; margin-top: 20px; }
 .share-actions .button { font-size: 12px; }
