@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Admin sign in | Newsroom</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="auth-page">
+	<main class="auth-card">
+		<a class="wordmark" th:href="@{/}">The Newsroom</a>
+		<h1>Admin sign in</h1>
+		<p class="muted">Sign in to manage newspaper editions and article links.</p>
+		<p class="notice error" th:if="${param.error}">Invalid username or password.</p>
+		<p class="notice success" th:if="${param.logout}">You have been signed out.</p>
+		<form th:action="@{/login}" method="post">
+			<label for="username">Username</label>
+			<input id="username" name="username" type="text" autocomplete="username" required maxlength="100">
+			<label for="password">Password</label>
+			<input id="password" name="password" type="password" autocomplete="current-password" required>
+			<button class="button primary full-width" type="submit">Sign in</button>
+		</form>
+		<a class="text-link" th:href="@{/}">Back to published newspapers</a>
+	</main>
+</body>
+</html>

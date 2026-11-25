@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="csrf-token" th:content="${_csrf.token}">
+	<meta name="csrf-header" th:content="${_csrf.headerName}">
+	<title>Annotate edition | Newsroom</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="annotation-page">
+	<header class="site-header">
+		<a class="wordmark" th:href="@{/admin/dashboard}">The Newsroom</a>
+		<div class="header-actions">
+			<a class="text-link" th:href="@{/admin/dashboard}">Dashboard</a>
+			<form th:action="@{/logout}" method="post"><button class="button secondary" type="submit">Sign out</button></form>
+		</div>
+	</header>
+	<main class="annotation-shell" id="annotation-app" th:attr="data-pdf-id=${document.id}">
+		<div class="page-heading compact-heading">
+			<div>
+				<p class="eyebrow">ARTICLE ANNOTATION</p>
+				<h1 th:text="${document.originalFilename}">edition.pdf</h1>
+				<p class="muted">Drag a rectangle around an article and give it a short title.</p>
+			</div>
+			<button class="button primary" id="save-annotations" type="button">Save all annotations</button>
+		</div>
+		<div class="editor-layout">
+			<section class="panel pdf-panel">
+				<div class="pdf-toolbar">
+					<button class="button secondary" id="previous-page" type="button">Previous</button>
+					<span id="page-indicator" aria-live="polite">Page 1 of 1</span>
+					<button class="button secondary" id="next-page" type="button">Next</button>
+					<button class="button secondary" id="zoom-out" type="button" aria-label="Zoom out">−</button>
+					<span id="zoom-indicator" aria-live="polite">200%</span>
+					<button class="button secondary" id="zoom-in" type="button" aria-label="Zoom in">+</button>
+				</div>
+				<p class="notice" id="editor-status" aria-live="polite">Loading PDF…</p>
+				<div class="pdf-stage" id="pdf-stage">
+					<canvas id="pdf-canvas"></canvas>
+					<div class="drawing-overlay" id="drawing-overlay"></div>
+				</div>
+			</section>
+			<aside class="panel annotation-sidebar">
+				<h2>Articles on this page</h2>
+				<p class="muted">Select an item to remove it before saving.</p>
+				<ul class="annotation-list" id="annotation-list"></ul>
+				<p class="empty-list muted" id="empty-annotations">No annotations on this page.</p>
+				<label for="ocr-language">OCR language</label>
+				<select id="ocr-language">
+					<option value="urd" selected>Urdu</option>
+					<option value="eng">English</option>
+					<option value="kan">Kannada</option>
+				</select>
+				<button class="button secondary full-width" id="auto-detect" type="button">Auto-detect article boxes</button>
+				<p class="muted small-help">Scanned pages use OCR in this browser. The PDF stays local; the first run downloads the selected OCR language model. Review, redraw, or remove boxes before saving.</p>
+			</aside>
+		</div>
+	</main>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
+	<script th:src="@{/js/admin-annotate.js}" defer></script>
+</body>
+</html>

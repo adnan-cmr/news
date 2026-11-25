@@ -1,0 +1,100 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:attr="lang=${language},dir=${language == 'ur' ? 'rtl' : 'ltr'}">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title th:text="${document != null ? document.originalFilename + ' | The Newsroom' : 'The Newsroom'}">The Newsroom</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="reader-page" id="reader-app"
+	th:attr="data-pdf-id=${document != null ? document.id : ''},data-language=${language}">
+	<header class="site-header">
+		<a class="wordmark" th:href="@{/(lang=${language})}" data-i18n="brand">The Newsroom</a>
+		<nav class="header-actions" aria-label="Published editions">
+			<a class="text-link" th:each="edition : ${publishedDocuments}"
+				th:href="@{/(pdf=${edition.id},lang=${language})}" th:text="${edition.originalFilename}">Edition</a>
+			<label class="language-picker">
+				<span class="sr-only" data-i18n="language">Language</span>
+				<select id="language-picker" aria-label="Language">
+					<option value="en" th:selected="${language == 'en'}">English</option>
+					<option value="ur" th:selected="${language == 'ur'}">اردو</option>
+					<option value="kn" th:selected="${language == 'kn'}">ಕನ್ನಡ</option>
+				</select>
+			</label>
+			<a class="button secondary" th:href="@{/login}" data-i18n="admin">Admin</a>
+		</nav>
+	</header>
+	<main class="reader-shell">
+		<div class="reader-topline">
+			<p data-i18n="editionByLanguage">A global view, in your language</p>
+			<time id="today-date"></time>
+		</div>
+		<section class="panel news-panel">
+			<div class="news-heading">
+				<div>
+					<p class="eyebrow" data-i18n="newsEyebrow">LATEST NEWS</p>
+					<h2 data-i18n="latestNews">Latest news</h2>
+				</div>
+			</div>
+			<p class="notice" th:if="${#lists.isEmpty(newsPosts)}" data-i18n="noNews">No news has been posted yet.</p>
+			<div class="news-grid" id="news-grid">
+				<article class="news-card" th:classappend="${postStat.first} ? ' news-card--feature' : ''"
+					th:each="post, postStat : ${newsPosts}">
+					<img th:src="@{/news/post/{id}/image(id=${post.id})}" th:alt="${post.heading(language)}"
+						style="max-width:100%;height:auto">
+					<p class="news-source" th:text="${post.category}">Category</p>
+					<h3 th:text="${post.heading(language)}">Heading</h3>
+					<p class="news-description" style="white-space:pre-line" th:text="${post.body(language)}">Body</p>
+					<div class="news-card-footer">
+						<time th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></time>
+					</div>
+				</article>
+			</div>
+		</section>
+		<section class="reader-heading" th:if="${document != null}">
+			<div>
+				<p class="eyebrow" data-i18n="latestEdition">LATEST EDITION</p>
+				<h1 th:text="${document.originalFilename}">Newspaper edition</h1>
+				<p class="muted" data-i18n="editionHint">Choose a highlighted story to view and share its clipping.</p>
+			</div>
+			<div class="pdf-toolbar">
+				<button class="button secondary" id="reader-previous" type="button" data-i18n="previous">Previous</button>
+				<span id="reader-page-indicator" aria-live="polite">Page 1</span>
+				<button class="button secondary" id="reader-next" type="button" data-i18n="next">Next</button>
+				<button class="button secondary" id="reader-zoom-out" type="button" aria-label="Zoom out">−</button>
+				<span id="reader-zoom-indicator" aria-live="polite">200%</span>
+				<button class="button secondary" id="reader-zoom-in" type="button" aria-label="Zoom in">+</button>
+			</div>
+		</section>
+		<p class="notice" id="reader-status" aria-live="polite" th:if="${document != null}" data-i18n="loadingEdition">Loading edition…</p>
+		<div class="reader-stage pdf-stage" id="reader-stage" th:if="${document != null}">
+			<canvas id="reader-canvas"></canvas>
+			<div class="reader-overlay" id="reader-overlay"></div>
+		</div>
+		<section class="empty-state public-empty" th:if="${document == null}">
+			<p class="eyebrow" data-i18n="brand">THE NEWSROOM</p>
+			<h1 data-i18n="noEdition">No newspaper has been published yet.</h1>
+			<p class="muted" data-i18n="checkBack">Please check back soon for the latest edition.</p>
+		</section>
+	</main>
+	<div class="modal-backdrop" id="story-modal" hidden>
+		<section class="story-modal" role="dialog" aria-modal="true" aria-labelledby="story-title">
+			<button class="modal-close" id="close-modal" type="button" aria-label="Close article">×</button>
+			<p class="eyebrow" data-i18n="fromEdition">FROM THIS EDITION</p>
+			<h2 id="story-title"></h2>
+			<img id="story-image" alt="Cropped newspaper article">
+			<div class="share-actions">
+				<a class="button secondary" id="share-facebook" target="_blank" rel="noopener noreferrer" data-i18n="facebook">Facebook</a>
+				<a class="button secondary" id="share-twitter" target="_blank" rel="noopener noreferrer" data-i18n="twitter">X / Twitter</a>
+				<a class="button secondary" id="share-whatsapp" target="_blank" rel="noopener noreferrer" data-i18n="whatsapp">WhatsApp</a>
+				<button class="button primary" id="copy-link" type="button" data-i18n="copyLink">Copy link</button>
+			</div>
+			<p class="muted" id="share-status" aria-live="polite"></p>
+		</section>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+	<script th:src="@{/js/news-feed.js}" defer></script>
+	<script th:src="@{/js/public-viewer.js}" defer></script>
+</body>
+</html>

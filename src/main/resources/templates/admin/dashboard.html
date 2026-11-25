@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Admin dashboard | Newsroom</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<header class="site-header">
+		<a class="wordmark" th:href="@{/admin/dashboard}">The Newsroom</a>
+		<div class="header-actions">
+			<a class="text-link" th:href="@{/admin/posts}">News posts</a>
+			<a class="text-link" th:href="@{/}" target="_blank" rel="noopener">View public site</a>
+			<form th:action="@{/logout}" method="post">
+				<button class="button secondary" type="submit">Sign out</button>
+			</form>
+		</div>
+	</header>
+	<main class="page-shell">
+		<div class="page-heading">
+			<div>
+				<p class="eyebrow">ADMINISTRATION</p>
+				<h1>Newspaper editions</h1>
+				<p class="muted">Upload an edition, mark article areas, then publish it for readers.</p>
+			</div>
+		</div>
+		<p class="notice success" th:if="${success}" th:text="${success}"></p>
+		<p class="notice error" th:if="${error}" th:text="${error}"></p>
+		<section class="panel upload-panel">
+			<div>
+				<h2>Upload a PDF</h2>
+				<p class="muted">PDF only, maximum 50 MB. Your original filename is never used for storage.</p>
+			</div>
+			<form class="upload-form" th:action="@{/admin/pdf/upload}" method="post" enctype="multipart/form-data">
+				<label class="sr-only" for="pdf-file">PDF file</label>
+				<input id="pdf-file" type="file" name="file" accept="application/pdf,.pdf" required>
+				<button class="button primary" type="submit">Upload edition</button>
+			</form>
+		</section>
+		<section class="panel">
+			<div class="section-heading">
+				<div>
+					<h2>All editions</h2>
+					<p class="muted">Newest uploads appear first.</p>
+				</div>
+			</div>
+			<div class="table-wrap" th:if="${!#lists.isEmpty(documents)}">
+				<table>
+					<thead>
+						<tr><th>Edition</th><th>Uploaded</th><th>Pages</th><th>Status</th><th>Actions</th></tr>
+					</thead>
+					<tbody>
+						<tr th:each="document : ${documents}">
+							<td class="edition-name" th:text="${document.originalFilename}">Edition.pdf</td>
+							<td th:text="${#temporals.format(document.uploadedAt, 'yyyy-MM-dd HH:mm')}">2026-01-01</td>
+							<td th:text="${document.pageCount}">1</td>
+							<td><span class="status" th:classappend="${document.published} ? ' published' : ''"
+									th:text="${document.published} ? 'Published' : 'Draft'">Draft</span></td>
+							<td>
+								<div class="row-actions">
+									<a class="button small secondary" th:href="@{/admin/annotate/{id}(id=${document.id})}">Annotate</a>
+									<form th:if="${!document.published}" th:action="@{/admin/pdf/{id}/publish(id=${document.id})}" method="post">
+										<button class="button small primary" type="submit">Publish</button>
+									</form>
+									<a class="button small text-button" th:if="${document.published}"
+										th:href="@{/(pdf=${document.id})}" target="_blank" rel="noopener">View</a>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="empty-state" th:if="${#lists.isEmpty(documents)}">
+				<h3>No editions uploaded yet</h3>
+				<p class="muted">Upload your first newspaper PDF to get started.</p>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>News posts | Newsroom</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<header class="site-header">
+		<a class="wordmark" th:href="@{/admin/dashboard}">The Newsroom</a>
+		<div class="header-actions">
+			<a class="text-link" th:href="@{/admin/dashboard}">Editions</a>
+			<a class="text-link" th:href="@{/}" target="_blank" rel="noopener">View public site</a>
+			<form th:action="@{/logout}" method="post">
+				<button class="button secondary" type="submit">Sign out</button>
+			</form>
+		</div>
+	</header>
+	<main class="page-shell">
+		<div class="page-heading">
+			<div>
+				<p class="eyebrow">ADMINISTRATION</p>
+				<h1>News posts</h1>
+				<p class="muted">Every field is required, including the heading and body in all three languages.</p>
+			</div>
+		</div>
+		<p class="notice success" th:if="${success}" th:text="${success}"></p>
+		<p class="notice error" th:if="${error}" th:text="${error}"></p>
+		<section class="panel">
+			<h2>Post news</h2>
+			<form th:action="@{/admin/posts}" method="post" enctype="multipart/form-data">
+				<p><label>Category<br>
+					<select name="category" required>
+						<option value="" disabled selected>Select a category</option>
+						<option th:each="c : ${categories}" th:value="${c}" th:text="${c}"></option>
+					</select></label></p>
+				<p><label>Image (JPEG, PNG or GIF, max 5 MB)<br>
+					<input type="file" name="image" accept="image/jpeg,image/png,image/gif" required></label></p>
+				<p><label>Heading (English)<br>
+					<input type="text" name="headingEn" maxlength="200" required style="width:100%"></label></p>
+				<p><label>Body (English)<br>
+					<textarea name="bodyEn" rows="6" maxlength="20000" required style="width:100%"></textarea></label></p>
+				<p><label>Heading (اردو)<br>
+					<input type="text" name="headingUr" dir="rtl" maxlength="200" required style="width:100%"></label></p>
+				<p><label>Body (اردو)<br>
+					<textarea name="bodyUr" dir="rtl" rows="6" maxlength="20000" required style="width:100%"></textarea></label></p>
+				<p><label>Heading (ಕನ್ನಡ)<br>
+					<input type="text" name="headingKn" maxlength="200" required style="width:100%"></label></p>
+				<p><label>Body (ಕನ್ನಡ)<br>
+					<textarea name="bodyKn" rows="6" maxlength="20000" required style="width:100%"></textarea></label></p>
+				<button class="button primary" type="submit">Publish news</button>
+			</form>
+		</section>
+		<section class="panel">
+			<h2>Published news</h2>
+			<div class="table-wrap" th:if="${!#lists.isEmpty(posts)}">
+				<table>
+					<thead><tr><th>Heading</th><th>Category</th><th>Posted</th><th>Actions</th></tr></thead>
+					<tbody>
+						<tr th:each="post : ${posts}">
+							<td th:text="${post.headingEn}">Heading</td>
+							<td th:text="${post.category}">World</td>
+							<td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">2026-01-01</td>
+							<td>
+								<form th:action="@{/admin/posts/{id}/delete(id=${post.id})}" method="post">
+									<button class="button small secondary" type="submit">Delete</button>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<p class="muted" th:if="${#lists.isEmpty(posts)}">No news posted yet.</p>
+		</section>
+	</main>
+</body>
+</html>
