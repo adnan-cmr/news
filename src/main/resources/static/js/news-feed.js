@@ -6,7 +6,7 @@
 
 	const messages = {
 		en: {
-			brand: "The Newsroom", admin: "Admin", language: "Language", editionByLanguage: "A global view, in your language", newsEyebrow: "LATEST NEWS",
+			brand: "The Newsroom", admin: "Admin", previousPapers: "Previous papers", language: "Language", editionByLanguage: "A global view, in your language", newsEyebrow: "LATEST NEWS",
 			latestNews: "Latest news", sourceLanguageNote: "Stories are shown in their original language from free RSS sources.",
 			refresh: "Refresh", loadingNews: "Loading news…", noNews: "No news has been posted yet.",
 			newsError: "News feeds are temporarily unavailable.", readStory: "Read story", latestEdition: "LATEST EDITION",
@@ -22,7 +22,7 @@
 			publishedEditions: "Published editions", closeArticle: "Close article", croppedArticle: "Cropped newspaper article"
 		},
 		ur: {
-			brand: "نیوز روم", admin: "منتظم", language: "زبان", editionByLanguage: "دنیا بھر کی خبریں، آپ کی زبان میں", newsEyebrow: "تازہ خبریں",
+			brand: "نیوز روم", admin: "منتظم", previousPapers: "پچھلے اخبارات", language: "زبان", editionByLanguage: "دنیا بھر کی خبریں، آپ کی زبان میں", newsEyebrow: "تازہ خبریں",
 			latestNews: "تازہ ترین خبریں", sourceLanguageNote: "خبریں مفت آر ایس ایس ذرائع سے ان کی اصل زبان میں دکھائی جاتی ہیں۔",
 			refresh: "تازہ کریں", loadingNews: "خبریں لوڈ ہو رہی ہیں…", noNews: "ابھی کوئی خبر پوسٹ نہیں کی گئی۔",
 			newsError: "خبریں عارضی طور پر دستیاب نہیں ہیں۔", readStory: "خبر پڑھیں", latestEdition: "تازہ شمارہ",
@@ -38,7 +38,7 @@
 			publishedEditions: "شائع شدہ شمارے", closeArticle: "خبر بند کریں", croppedArticle: "اخبار سے تراشی گئی خبر"
 		},
 		kn: {
-			brand: "ನ್ಯೂಸ್‌ರೂಮ್", admin: "ನಿರ್ವಾಹಕರು", language: "ಭಾಷೆ", editionByLanguage: "ಜಗತ್ತಿನ ಸುದ್ದಿ, ನಿಮ್ಮ ಭಾಷೆಯಲ್ಲಿ", newsEyebrow: "ಇತ್ತೀಚಿನ ಸುದ್ದಿ",
+			brand: "ನ್ಯೂಸ್‌ರೂಮ್", admin: "ನಿರ್ವಾಹಕರು", previousPapers: "ಹಿಂದಿನ ಪತ್ರಿಕೆಗಳು", language: "ಭಾಷೆ", editionByLanguage: "ಜಗತ್ತಿನ ಸುದ್ದಿ, ನಿಮ್ಮ ಭಾಷೆಯಲ್ಲಿ", newsEyebrow: "ಇತ್ತೀಚಿನ ಸುದ್ದಿ",
 			latestNews: "ಇತ್ತೀಚಿನ ಸುದ್ದಿ", sourceLanguageNote: "ಉಚಿತ RSS ಮೂಲಗಳಿಂದ ಸುದ್ದಿಗಳನ್ನು ಅವುಗಳ ಮೂಲ ಭಾಷೆಯಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತದೆ.",
 			refresh: "ಮತ್ತೆ ಲೋಡ್ ಮಾಡಿ", loadingNews: "ಸುದ್ದಿ ಲೋಡ್ ಆಗುತ್ತಿದೆ…", noNews: "ಇನ್ನೂ ಯಾವುದೇ ಸುದ್ದಿ ಪೋಸ್ಟ್ ಮಾಡಲಾಗಿಲ್ಲ.",
 			newsError: "ಸುದ್ದಿ ಫೀಡ್‌ಗಳು ತಾತ್ಕಾಲಿಕವಾಗಿ ಲಭ್ಯವಿಲ್ಲ.", readStory: "ಸುದ್ದಿ ಓದಿ", latestEdition: "ಇತ್ತೀಚಿನ ಆವೃತ್ತಿ",

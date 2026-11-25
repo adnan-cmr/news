@@ -15,7 +15,7 @@
 	const imageElement = document.getElementById("story-image");
 	let pdf = null;
 	let pageNumber = 1;
-	let zoom = 2;
+	let zoom = 1;
 	let viewport = null;
 	let annotations = [];
 

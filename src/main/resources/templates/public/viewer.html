@@ -12,8 +12,6 @@
 	<header class="site-header">
 		<a class="wordmark" th:href="@{/(lang=${language})}" data-i18n="brand">The Newsroom</a>
 		<nav class="header-actions" aria-label="Published editions">
-			<a class="text-link" th:each="edition : ${publishedDocuments}"
-				th:href="@{/(pdf=${edition.id},lang=${language})}" th:text="${edition.originalFilename}">Edition</a>
 			<label class="language-picker">
 				<span class="sr-only" data-i18n="language">Language</span>
 				<select id="language-picker" aria-label="Language">
@@ -25,33 +23,21 @@
 			<a class="button secondary" th:href="@{/login}" data-i18n="admin">Admin</a>
 		</nav>
 	</header>
-	<main class="reader-shell">
+	<main class="reader-layout">
+		<aside class="reader-sidebar" aria-labelledby="previous-papers-heading">
+			<h2 id="previous-papers-heading" data-i18n="previousPapers">Previous papers</h2>
+			<ul class="paper-list">
+				<li th:each="edition : ${publishedDocuments}">
+					<a th:href="@{/(pdf=${edition.id},lang=${language})}" th:text="${edition.originalFilename}"
+						th:classappend="${document != null and document.id == edition.id} ? 'is-current' : ''">Edition</a>
+				</li>
+			</ul>
+		</aside>
+		<div class="reader-main">
 		<div class="reader-topline">
 			<p data-i18n="editionByLanguage">A global view, in your language</p>
 			<time id="today-date"></time>
 		</div>
-		<section class="panel news-panel">
-			<div class="news-heading">
-				<div>
-					<p class="eyebrow" data-i18n="newsEyebrow">LATEST NEWS</p>
-					<h2 data-i18n="latestNews">Latest news</h2>
-				</div>
-			</div>
-			<p class="notice" th:if="${#lists.isEmpty(newsPosts)}" data-i18n="noNews">No news has been posted yet.</p>
-			<div class="news-grid" id="news-grid">
-				<article class="news-card" th:classappend="${postStat.first} ? ' news-card--feature' : ''"
-					th:each="post, postStat : ${newsPosts}">
-					<img th:src="@{/news/post/{id}/image(id=${post.id})}" th:alt="${post.heading(language)}"
-						style="max-width:100%;height:auto">
-					<p class="news-source" th:text="${post.category}">Category</p>
-					<h3 th:text="${post.heading(language)}">Heading</h3>
-					<p class="news-description" style="white-space:pre-line" th:text="${post.body(language)}">Body</p>
-					<div class="news-card-footer">
-						<time th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></time>
-					</div>
-				</article>
-			</div>
-		</section>
 		<section class="reader-heading" th:if="${document != null}">
 			<div>
 				<p class="eyebrow" data-i18n="latestEdition">LATEST EDITION</p>
@@ -63,7 +49,7 @@
 				<span id="reader-page-indicator" aria-live="polite">Page 1</span>
 				<button class="button secondary" id="reader-next" type="button" data-i18n="next">Next</button>
 				<button class="button secondary" id="reader-zoom-out" type="button" aria-label="Zoom out">−</button>
-				<span id="reader-zoom-indicator" aria-live="polite">200%</span>
+				<span id="reader-zoom-indicator" aria-live="polite">100%</span>
 				<button class="button secondary" id="reader-zoom-in" type="button" aria-label="Zoom in">+</button>
 			</div>
 		</section>
@@ -77,6 +63,22 @@
 			<h1 data-i18n="noEdition">No newspaper has been published yet.</h1>
 			<p class="muted" data-i18n="checkBack">Please check back soon for the latest edition.</p>
 		</section>
+		</div>
+		<aside class="reader-sidebar" aria-labelledby="latest-news-heading">
+			<h2 id="latest-news-heading" data-i18n="latestNews">Latest news</h2>
+			<p class="notice" th:if="${#lists.isEmpty(newsPosts)}" data-i18n="noNews">No news has been posted yet.</p>
+			<div class="news-grid" id="news-grid">
+				<article class="news-card" th:each="post : ${newsPosts}">
+					<img th:src="@{/news/post/{id}/image(id=${post.id})}" th:alt="${post.heading(language)}">
+					<p class="news-source" th:text="${post.category}">Category</p>
+					<h3 th:text="${post.heading(language)}">Heading</h3>
+					<p class="news-description" style="white-space:pre-line" th:text="${post.body(language)}">Body</p>
+					<div class="news-card-footer">
+						<time th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></time>
+					</div>
+				</article>
+			</div>
+		</aside>
 	</main>
 	<div class="modal-backdrop" id="story-modal" hidden>
 		<section class="story-modal" role="dialog" aria-modal="true" aria-labelledby="story-title">

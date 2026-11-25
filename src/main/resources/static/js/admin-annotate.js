@@ -17,7 +17,7 @@
 	let pdf = null;
 	let pageNumber = 1;
 	let viewport = null;
-	let zoom = 2;
+	let zoom = 1;
 	let allAnnotations = [];
 	let dragStart = null;
 	let preview = null;
